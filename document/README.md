@@ -1,0 +1,1 @@
+This is a folder which contains some papers about Multi-factor Stock Selection.
