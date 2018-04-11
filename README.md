@@ -4,4 +4,5 @@ This repository implements the Stock Forecasting Model based on research reports
 
 #### About Research Reports
 
-The document/ folder contains more detail about research reports
+The `document/` folder contains more detail about research reports
+
