@@ -1,5 +1,5 @@
 ## Data Prepare
-You should put this .py file under GPSJ folder. It generates csv file by stock, as well as by feature.
+You should put this .py file under GPSJ folder. It generates .csv files by stock, as well as by feature.
 
 #### Work to Be Completed
 1. Data missing 
