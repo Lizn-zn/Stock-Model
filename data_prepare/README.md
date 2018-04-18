@@ -1,8 +1,7 @@
 ## Data Prepare
-You should put this .py file under GPSJ folder. It generates .csv files by stock, as well as by feature.
-
-#### Work to Be Completed
-#####1. Data missing 
+You should put this .py file under GPSJ folder. It generates .csv files by stock, as well as by feature. In addition, a .txt file which discribes feature is also available.
+### Work to Be Completed
+####1. Data missing 
 For some feature, some stock do not even have one piece of data. e.g. For stock 000001.SZ, there is no record for its ROIC data.
 
 About this problem, in machine learning, we have four methods to solve:
@@ -17,7 +16,7 @@ About this problem, in machine learning, we have four methods to solve:
 
   I think finally we will use the method (d), but maybe we can use (b) to restore some data because we have lots of factors and we won't take all of them into our model.
 
-#####2. Factor Analysis
+####2. Factor Analysis
   Colinearity etc.
 
-#####3. Other important data, which should be calculated in the future (man man lai ba, md 70 ge yin zi)
+####3. Other important data, which should be calculated in the future (man man lai ba, md 70 ge yin zi)

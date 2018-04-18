@@ -32,6 +32,8 @@ def concat_data(directory, subs_col=None, period="monthly", store_path=None):
     df = pd.DataFrame()
     df_list = []
 
+    is_written = False
+
     for excel in excel_list:
 
         # Continue if it is not a table
@@ -44,6 +46,12 @@ def concat_data(directory, subs_col=None, period="monthly", store_path=None):
         df_new = pd.read_excel(directory+"\\"+excel, index_col=0)
         df_new.index.rename(name="Code", inplace=True)
         df_new.drop("证券简称", axis=1, inplace=True)
+
+        if not is_written:
+            names = df_new.columns.values
+            temp = list(map(lambda x:x[0].split('\n')[0]+' : '+x[1],zip(names,subs_col)))
+            file_text.write('\n'.join(temp))
+            is_written = True
 
         # Substitute columns in Chinese Mandarin by English name
         if subs_col is not None:
@@ -116,7 +124,7 @@ def stock_df(monthly_dir="data\\monthly", half_year_dir="data\\halfyear", save_d
 
     # Time format index name
     month_data_range = pd.date_range(start="2010-01-01", end="2018-03-01", freq="1M")
-    half_year_data_range = pd.date_range(start="2010-10-01", end="2018-11-01", freq="6M")
+    half_year_data_range = pd.date_range(start="2009-10-01", end="2018-11-01", freq="6M")
 
     # Read monthly data tables to DataFrames
     for data_name in monthly_data_name:
@@ -132,7 +140,7 @@ def stock_df(monthly_dir="data\\monthly", half_year_dir="data\\halfyear", save_d
         tmp.index = half_year_data_range
         half_year_data_list.append(tmp.reindex(month_data_range))
 
-    # Get codes of the stocks
+# Get codes of the stocks
     stocks = monthly_data_list[0].columns
 
     # Create table for each stock
@@ -157,8 +165,9 @@ if __name__ == "__main__":
     # ps: per share; EM: Equity Multiplier; GS: gross sales; CaR: Cash Ratio; DTAR: Debt to tangible assets ratio
     # gr: growth rate; CR: current ratio; AR: Acid-test Ratio; LDOR: Long Term Debt and Operation Asset Ratio
     # yoy: on year-on-year base; LTDR: Long Term Debt Ratio; bo: by operation
+    file_text = open('data_discribtion.txt','w')
 
-    directory_names = ["成长能力与偿债能力", "技术指标", "财务质量"]
+    directory_names = ["成长能力与偿债能力", "技术指标", "财务质量", "估值指标"]
 
     col_growth = ["EPS_gr_yoy", "GS_gr_yoy", "NP_gr_yoy", "NA_gr_yoy",
                   "CF_gr_yoy", "CF_bo_gr_yoy", "ROE", "EM",
@@ -173,4 +182,7 @@ if __name__ == "__main__":
                "ROSTC", "AD_TI", "AD_OP", "DAR", "CAT", "NCAT", "TTM"]
     concat_data(directory_names[2], subs_col=col_fin, period="halfyear", store_path="data\\finance.csv")
 
+    
     stock_df()
+
+    file_text.close()
