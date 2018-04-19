@@ -5,7 +5,6 @@ import pandas as pd
 
 
 def concat_data(directory, subs_col=None, period="monthly", store_path=None):
-
     """
     Concat data
     :param directory: data file directory
@@ -33,6 +32,8 @@ def concat_data(directory, subs_col=None, period="monthly", store_path=None):
     df = pd.DataFrame()
     df_list = []
 
+    is_written = False
+
     for excel in excel_list:
 
         # Continue if it is not a table
@@ -42,9 +43,16 @@ def concat_data(directory, subs_col=None, period="monthly", store_path=None):
         year = excel[:4]
 
         # Read data from one table
-        df_new = pd.read_excel(directory+"\\"+excel, index_col=0)
+        df_new = pd.read_excel(directory + "\\" + excel, index_col=0)
         df_new.index.rename(name="Code", inplace=True)
         df_new.drop("证券简称", axis=1, inplace=True)
+
+        if not is_written:
+            names = df_new.columns.values
+            temp = list(map(lambda x: x[0].split('\n')[
+                        0] + ' : ' + x[1], zip(names, subs_col)))
+            file_text.write('\n'.join(temp))
+            is_written = True
 
         # Substitute columns in Chinese Mandarin by English name
         if subs_col is not None:
@@ -57,7 +65,8 @@ def concat_data(directory, subs_col=None, period="monthly", store_path=None):
 
             elif period == "monthly":
                 month = "_" + excel[5: 7]
-                subs_col_name = [name + "_" + year + month for name in subs_col]
+                subs_col_name = [name + "_" +
+                                 year + month for name in subs_col]
                 df_new.columns = subs_col_name
 
             else:
@@ -72,7 +81,8 @@ def concat_data(directory, subs_col=None, period="monthly", store_path=None):
     # Keep stocks in Shanghai and Shenzhen Stock Exchange
     m, n = df_list[0].shape
     df.drop([df.index[m - 1], df.index[m - 2]], axis=0, inplace=True)
-    keep_index = df.index[df.index.str.startswith("60") | df.index.str.startswith("00")]
+    keep_index = df.index[df.index.str.startswith(
+        "60") | df.index.str.startswith("00")]
     df = df.ix[keep_index]
 
     df.sort_index(axis=1, inplace=True)
@@ -111,8 +121,10 @@ def get_names(monthly_dir="data\\monthly", half_year_dir="data\\halfyear", ):
     half_year_data_list = []
 
     # Time format index name
-    month_data_range = pd.date_range(start="2010-01-01", end="2018-03-01", freq="1M")
-    half_year_data_range = pd.date_range(start="2010-10-01", end="2018-11-01", freq="6M")
+    month_data_range = pd.date_range(
+        start="2010-01-01", end="2018-03-01", freq="1M")
+    half_year_data_range = pd.date_range(
+        start="2010-10-01", end="2018-11-01", freq="6M")
 
     # Read monthly data tables to DataFrames
     for data_name in monthly_data_name:
@@ -135,7 +147,6 @@ def get_names(monthly_dir="data\\monthly", half_year_dir="data\\halfyear", ):
 
 
 def stock_df(save_dir="data\\stock_data"):
-
     """
     Store data of a single stock in a single excel table
     :param monthly_dir: monthly data directory
@@ -173,23 +184,31 @@ if __name__ == "__main__":
     # gr: growth rate; CR: current ratio; AR: Acid-test Ratio; LDOR: Long Term Debt and Operation Asset Ratio
     # yoy: on year-on-year base; LTDR: Long Term Debt Ratio; bo: by operation
 
+    file_text = open('data_discribtion.txt', 'w')
+
     directory_names = ["成长能力与偿债能力", "技术指标", "财务质量", "估值指标"]
 
     col_growth = ["EPS_gr_yoy", "GS_gr_yoy", "NP_gr_yoy", "NA_gr_yoy",
                   "CF_gr_yoy", "CF_bo_gr_yoy", "ROE", "EM",
                   "CR", "AR", "CaR", "DTAR", "LDOR", "LTDR"]
-    concat_data(directory_names[0], subs_col=col_growth, period="halfyear", store_path="data\\growth_and_debt.csv")
+    concat_data(directory_names[0], subs_col=col_growth,
+                period="halfyear", store_path="data\\growth_and_debt.csv")
 
     col_tech = ["DMA", "DMI", "MACD", "BBI", "BIAS", "CCI", "DPO", "ARBR",
                 "CR", "PSY", "BBIBOLL", "BOLL", "MktSyn", "MI", "ADTM", "ATR"]
-    concat_data(directory_names[1], subs_col=col_tech, period="monthly", store_path="data\\tech.csv")
+    concat_data(directory_names[1], subs_col=col_tech,
+                period="monthly", store_path="data\\tech.csv")
 
     col_fin = ["ROE_ave", "ROE_flat", "ROA", "ROTA", "ROIC", "ROP", "NPMOS", "GPMOS",
                "ROSTC", "AD_TI", "AD_OP", "DAR", "CAT", "NCAT", "TTM"]
-    concat_data(directory_names[2], subs_col=col_fin, period="halfyear", store_path="data\\finance.csv")
+    concat_data(directory_names[2], subs_col=col_fin,
+                period="halfyear", store_path="data\\finance.csv")
 
     col_valuation = ["PE_TTM", "PE_TTM_2", "PE_LYR", "PB", "PS_TTM", "PS_LYR",
                      "PCF_OPER_TTM", "PCF_NF_TTM", "PCF_OPER_LYR", "PCF_NF_LYR"]
-    concat_data(directory_names[3], subs_col=col_valuation, period="monthly", store_path="data\\valuation.csv")
+    concat_data(directory_names[3], subs_col=col_valuation,
+                period="monthly", store_path="data\\valuation.csv")
 
     stock_df()
+
+    file_text.close()
