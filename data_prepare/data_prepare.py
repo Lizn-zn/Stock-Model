@@ -1,4 +1,5 @@
 import os
+import sqlite3
 
 import pandas as pd
 
@@ -32,8 +33,6 @@ def concat_data(directory, subs_col=None, period="monthly", store_path=None):
     df = pd.DataFrame()
     df_list = []
 
-    is_written = False
-
     for excel in excel_list:
 
         # Continue if it is not a table
@@ -46,12 +45,6 @@ def concat_data(directory, subs_col=None, period="monthly", store_path=None):
         df_new = pd.read_excel(directory+"\\"+excel, index_col=0)
         df_new.index.rename(name="Code", inplace=True)
         df_new.drop("证券简称", axis=1, inplace=True)
-
-        if not is_written:
-            names = df_new.columns.values
-            temp = list(map(lambda x:x[0].split('\n')[0]+' : '+x[1],zip(names,subs_col)))
-            file_text.write('\n'.join(temp))
-            is_written = True
 
         # Substitute columns in Chinese Mandarin by English name
         if subs_col is not None:
@@ -94,6 +87,11 @@ def concat_data(directory, subs_col=None, period="monthly", store_path=None):
         name = name[:name.find("20") - 1]
         tmp_df.index.rename(name="Code", inplace=True)
 
+        mean = tmp_df.mean(axis=1)
+        for column in tmp_df.columns:
+            if tmp_df[column].empty:
+                tmp_df[column] = mean
+
         print("Saving split data : {}".format(name))
         tmp_df.to_csv("data\\" + period + "\\" + name + ".csv")
 
@@ -102,17 +100,7 @@ def concat_data(directory, subs_col=None, period="monthly", store_path=None):
     return df
 
 
-def stock_df(monthly_dir="data\\monthly", half_year_dir="data\\halfyear", save_dir="data\\stock_data"):
-
-    """
-    Store data of a single stock in a single excel table
-    :param monthly_dir: monthly data directory
-    :param half_year_dir: half year data directory
-    :param save_dir: stock data table saving path
-    """
-
-    if not os.path.exists(save_dir):
-        os.makedirs(save_dir)
+def get_names(monthly_dir="data\\monthly", half_year_dir="data\\halfyear", ):
 
     # Get the name of tables
     monthly_data_name = os.listdir(monthly_dir)
@@ -124,7 +112,7 @@ def stock_df(monthly_dir="data\\monthly", half_year_dir="data\\halfyear", save_d
 
     # Time format index name
     month_data_range = pd.date_range(start="2010-01-01", end="2018-03-01", freq="1M")
-    half_year_data_range = pd.date_range(start="2009-10-01", end="2018-11-01", freq="6M")
+    half_year_data_range = pd.date_range(start="2010-10-01", end="2018-11-01", freq="6M")
 
     # Read monthly data tables to DataFrames
     for data_name in monthly_data_name:
@@ -140,8 +128,25 @@ def stock_df(monthly_dir="data\\monthly", half_year_dir="data\\halfyear", save_d
         tmp.index = half_year_data_range
         half_year_data_list.append(tmp.reindex(month_data_range))
 
-# Get codes of the stocks
+    # Get codes of the stocks
     stocks = monthly_data_list[0].columns
+
+    return [stocks, month_data_range, monthly_data_name, monthly_data_list, half_year_data_name, half_year_data_list]
+
+
+def stock_df(save_dir="data\\stock_data"):
+
+    """
+    Store data of a single stock in a single excel table
+    :param monthly_dir: monthly data directory
+    :param half_year_dir: half year data directory
+    :param save_dir: stock data table saving path
+    """
+
+    if not os.path.exists(save_dir):
+        os.makedirs(save_dir)
+
+    stocks, month_data_range, monthly_data_name, monthly_data_list, half_year_data_name, half_year_data_list = get_names()
 
     # Create table for each stock
     for stock in stocks:
@@ -155,7 +160,9 @@ def stock_df(monthly_dir="data\\monthly", half_year_dir="data\\halfyear", save_d
 
         # Forward fill in the blank
         stock_data.fillna(method="ffill", inplace=True)
+        stock_data.dropna()
 
+        stock_data.rolling(5).to_csv()
         # Save to disk
         stock_data.to_csv(save_dir + "\\" + stock[:-3] + ".csv")
 
@@ -165,7 +172,6 @@ if __name__ == "__main__":
     # ps: per share; EM: Equity Multiplier; GS: gross sales; CaR: Cash Ratio; DTAR: Debt to tangible assets ratio
     # gr: growth rate; CR: current ratio; AR: Acid-test Ratio; LDOR: Long Term Debt and Operation Asset Ratio
     # yoy: on year-on-year base; LTDR: Long Term Debt Ratio; bo: by operation
-    file_text = open('data_discribtion.txt','w')
 
     directory_names = ["成长能力与偿债能力", "技术指标", "财务质量", "估值指标"]
 
@@ -182,7 +188,8 @@ if __name__ == "__main__":
                "ROSTC", "AD_TI", "AD_OP", "DAR", "CAT", "NCAT", "TTM"]
     concat_data(directory_names[2], subs_col=col_fin, period="halfyear", store_path="data\\finance.csv")
 
-    
-    stock_df()
+    col_valuation = ["PE_TTM", "PE_TTM_2", "PE_LYR", "PB", "PS_TTM", "PS_LYR",
+                     "PCF_OPER_TTM", "PCF_NF_TTM", "PCF_OPER_LYR", "PCF_NF_LYR"]
+    concat_data(directory_names[3], subs_col=col_valuation, period="monthly", store_path="data\\valuation.csv")
 
-    file_text.close()
+    stock_df()
