@@ -177,11 +177,13 @@ def stock_df(save_dir="data\\stock_data"):
                       (str(stock), data_name))
                 continue
             stock_data[data_name[:-4]] = half_year_data_list[i][stock]
-
         # Forward fill in the blank
-        stock_data.fillna(method="ffill", inplace=True)
-        stock_data.dropna()
+        stock_data.dropna(axis=0, thresh=5,inplace=True)
 
+        if(stock_data.empty):
+            continue
+        stock_data.fillna(method="ffill", inplace=True)
+        stock_data.fillna(method="bfill", inplace=True)
         # Save to disk
         stock_data.to_csv(save_dir + "\\" + stock[:-3] + ".csv")
 
