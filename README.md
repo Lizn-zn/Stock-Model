@@ -12,7 +12,7 @@ The `document/` folder contains more detail about research reports.
 
 #### About data acquisition
 
-We have downloaded some data from Wind, and others will be calculated by ourselves. The data could be access from [data](https://pan.baidu.com/s/1PSw9UFa9opEXa7XiiwvKHA) and password is 'k508'. This is a whole dataset.
+We have downloaded some data from Wind, and others will be calculated by ourselves. The data could be access from [data](链接：https://pan.baidu.com/s/1hpxHFIOCarn_aKbGcs36yg) and password is 'gf2t'. This is a whole dataset.
 
 #### About data preparation
 ###### 1. Handle missing data:
