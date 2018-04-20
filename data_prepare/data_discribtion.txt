@@ -1,0 +1,54 @@
+基本每股收益(同比增长率) : EPS_gr_yoy
+营业收入(同比增长率) : GS_gr_yoy
+净利润(同比增长率) : NP_gr_yoy
+净资产(同比增长率) : NA_gr_yoy
+现金净流量(同比增长率) : CF_gr_yoy
+经营活动产生的现金流量净额(同比增长率) : CF_bo_gr_yoy
+净资产收益率ROE : ROE
+权益乘数(杜邦分析) : EM
+流动比率 : CR
+速动比率 : AR
+现金比率 : CaR
+有形资产/净债务 : DTAR
+长期债务与营运资金比率 : LDOR
+长期负债占比 : LTDRDMA平均线差 : DMA
+DMI趋向指标 : DMI
+MACD指数平滑移动平均 : MACD
+BBI多空指数 : BBI
+BIAS乖离率 : BIAS
+CCI顺势指标 : CCI
+DPO区间震荡线 : DPO
+ARBR人气意愿指标 : ARBR
+CR能量指标 : CR
+PSY心理指标 : PSY
+BBIBOLL多空布林线 : BBIBOLL
+BOLL布林带 : BOLL
+大盘同步指标 : MktSyn
+MI动量指标 : MI
+ADTM动态买卖气指标 : ADTM
+ATR真实波幅 : ATR净资产收益率ROE(平均) : ROE_ave
+净资产收益率ROE(摊薄) : ROE_flat
+总资产报酬率ROA : ROA
+总资产净利率ROA : ROTA
+投入资本回报率ROIC : ROIC
+人力投入回报率(ROP) : ROP
+销售净利率 : NPMOS
+销售毛利率 : GPMOS
+销售成本率 : ROSTC
+资产减值损失/营业总收入(TTM) : AD_TI
+资产减值损失/营业利润 : AD_OP
+资产负债率 : DAR
+流动资产周转率 : CAT
+非流动资产周转率 : NCAT
+总资产周转率(TTM) : TAT总市值1 : CAP_1
+总市值2 : CAP_2
+市盈率PE(TTM) : PE_TTM
+市盈率PE(TTM,扣除非经常性损益) : PE_TTM_2
+市盈率PE(LYR) : PE_LYR
+市净率PB(LF) : PB
+市销率PS(TTM) : PS_TTM
+市销率PS(LYR) : PS_LYR
+市现率PCF(经营现金流TTM) : PCF_OPER_TTM
+市现率PCF(现金净流量TTM) : PCF_NF_TTM
+市现率PCF(经营现金流LYR) : PCF_OPER_LYR
+市现率PCF(现金净流量LYR) : PCF_NF_LYR

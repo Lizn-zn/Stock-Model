@@ -173,7 +173,6 @@ def stock_df(save_dir="data\\stock_data"):
         stock_data.fillna(method="ffill", inplace=True)
         stock_data.dropna()
 
-        stock_data.rolling(5).to_csv()
         # Save to disk
         stock_data.to_csv(save_dir + "\\" + stock[:-3] + ".csv")
 
@@ -200,11 +199,11 @@ if __name__ == "__main__":
                 period="monthly", store_path="data\\tech.csv")
 
     col_fin = ["ROE_ave", "ROE_flat", "ROA", "ROTA", "ROIC", "ROP", "NPMOS", "GPMOS",
-               "ROSTC", "AD_TI", "AD_OP", "DAR", "CAT", "NCAT", "TTM"]
+               "ROSTC", "AD_TI", "AD_OP", "DAR", "CAT", "NCAT", "TAT"]
     concat_data(directory_names[2], subs_col=col_fin,
                 period="halfyear", store_path="data\\finance.csv")
 
-    col_valuation = ["PE_TTM", "PE_TTM_2", "PE_LYR", "PB", "PS_TTM", "PS_LYR",
+    col_valuation = ["CAP_1", "CAP_2", "PE_TTM", "PE_TTM_2", "PE_LYR", "PB", "PS_TTM", "PS_LYR",
                      "PCF_OPER_TTM", "PCF_NF_TTM", "PCF_OPER_LYR", "PCF_NF_LYR"]
     concat_data(directory_names[3], subs_col=col_valuation,
                 period="monthly", store_path="data\\valuation.csv")
