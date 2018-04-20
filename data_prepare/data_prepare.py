@@ -40,7 +40,7 @@ def concat_data(directory, subs_col=None, period="monthly", store_path=None):
             continue
 
         if excel.startswith("~$"):
-        	continue
+            continue
 
         year = excel[:4]
 
@@ -124,9 +124,9 @@ def get_names(monthly_dir="data\\monthly", half_year_dir="data\\halfyear", ):
 
     # Time format index name
     month_data_range = pd.date_range(
-        start="2010-01-01", end="2018-03-01", freq="1M")
+        start="2010-01-01", end="2018-04-01", freq="1M")
     half_year_data_range = pd.date_range(
-        start="2010-10-01", end="2018-11-01", freq="6M")
+        start="2009-10-01", end="2018-11-01", freq="6M")
 
     # Read monthly data tables to DataFrames
     for data_name in monthly_data_name:
@@ -160,15 +160,22 @@ def stock_df(save_dir="data\\stock_data"):
         os.makedirs(save_dir)
 
     stocks, month_data_range, monthly_data_name, monthly_data_list, half_year_data_name, half_year_data_list = get_names()
-
     # Create table for each stock
     for stock in stocks:
         print(stock)
         stock_data = pd.DataFrame(index=month_data_range)
 
         for (i, data_name) in enumerate(monthly_data_name):
+            if(stock not in monthly_data_list[i]):
+                print('The stock %s does not have month %s data' %
+                      (str(stock), data_name))
+                continue
             stock_data[data_name[:-4]] = monthly_data_list[i][stock]
         for (i, data_name) in enumerate(half_year_data_name):
+            if(stock not in half_year_data_list[i]):
+                print('The stock %s does not have year %s data' %
+                      (str(stock), data_name))
+                continue
             stock_data[data_name[:-4]] = half_year_data_list[i][stock]
 
         # Forward fill in the blank
