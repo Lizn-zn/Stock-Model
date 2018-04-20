@@ -1,5 +1,5 @@
 ## Data Prepare
-You should put this .py file under GPSJ folder. It generates .csv files by stock, as well as by feature. In addition, a .txt file which discribes feature is also available.
+You should put these two .py file under GPSJ folder. data_prepare.py generates .csv files by stock, as well as by feature. In addition, a .txt file which discribes feature is also available. hist.py generates historical stock data, which is used to label the examples.
 ### Work to Be Completed
 #### 1. Data missing 
 For some feature, some stock do not even have one piece of data. e.g. For stock 000001.SZ, there is no record for its ROIC data.
