@@ -1,5 +1,4 @@
 import os
-import sqlite3
 
 import pandas as pd
 
@@ -39,6 +38,9 @@ def concat_data(directory, subs_col=None, period="monthly", store_path=None):
         # Continue if it is not a table
         if not (excel.endswith(".csv") or excel.endswith(".xlsx")):
             continue
+
+        if excel.startswith("~$"):
+        	continue
 
         year = excel[:4]
 
