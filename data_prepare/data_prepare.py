@@ -185,7 +185,7 @@ def stock_df(save_dir="data\\stock_data"):
         stock_data.fillna(method="ffill", inplace=True)
         stock_data.fillna(method="bfill", inplace=True)
         # Save to disk
-        stock_data.to_csv(save_dir + "\\" + stock[:-3] + ".csv")
+        stock_data.to_csv(save_dir + "\\" + stock + ".csv")
 
 
 if __name__ == "__main__":
@@ -194,31 +194,31 @@ if __name__ == "__main__":
     # gr: growth rate; CR: current ratio; AR: Acid-test Ratio; LDOR: Long Term Debt and Operation Asset Ratio
     # yoy: on year-on-year base; LTDR: Long Term Debt Ratio; bo: by operation
 
-    file_text = open('data_discribtion.txt', 'w')
+    # file_text = open('data_discribtion.txt', 'w')
 
-    directory_names = ["成长能力与偿债能力", "技术指标", "财务质量", "估值指标"]
+    # directory_names = ["成长能力与偿债能力", "技术指标", "财务质量", "估值指标"]
 
-    col_growth = ["EPS_gr_yoy", "GS_gr_yoy", "NP_gr_yoy", "NA_gr_yoy",
-                  "CF_gr_yoy", "CF_bo_gr_yoy", "ROE", "EM",
-                  "CR", "AR", "CaR", "DTAR", "LDOR", "LTDR"]
-    concat_data(directory_names[0], subs_col=col_growth,
-                period="halfyear", store_path="data\\growth_and_debt.csv")
+    # col_growth = ["EPS_gr_yoy", "GS_gr_yoy", "NP_gr_yoy", "NA_gr_yoy",
+    #               "CF_gr_yoy", "CF_bo_gr_yoy", "ROE", "EM",
+    #               "CR", "AR", "CaR", "DTAR", "LDOR", "LTDR"]
+    # concat_data(directory_names[0], subs_col=col_growth,
+    #             period="halfyear", store_path="data\\growth_and_debt.csv")
 
-    col_tech = ["DMA", "DMI", "MACD", "BBI", "BIAS", "CCI", "DPO", "ARBR",
-                "CR", "PSY", "BBIBOLL", "BOLL", "MktSyn", "MI", "ADTM", "ATR"]
-    concat_data(directory_names[1], subs_col=col_tech,
-                period="monthly", store_path="data\\tech.csv")
+    # col_tech = ["DMA", "DMI", "MACD", "BBI", "BIAS", "CCI", "DPO", "ARBR",
+    #             "CR", "PSY", "BBIBOLL", "BOLL", "MktSyn", "MI", "ADTM", "ATR"]
+    # concat_data(directory_names[1], subs_col=col_tech,
+    #             period="monthly", store_path="data\\tech.csv")
 
-    col_fin = ["ROE_ave", "ROE_flat", "ROA", "ROTA", "ROIC", "ROP", "NPMOS", "GPMOS",
-               "ROSTC", "AD_TI", "AD_OP", "DAR", "CAT", "NCAT", "TAT"]
-    concat_data(directory_names[2], subs_col=col_fin,
-                period="halfyear", store_path="data\\finance.csv")
+    # col_fin = ["ROE_ave", "ROE_flat", "ROA", "ROTA", "ROIC", "ROP", "NPMOS", "GPMOS",
+    #            "ROSTC", "AD_TI", "AD_OP", "DAR", "CAT", "NCAT", "TAT"]
+    # concat_data(directory_names[2], subs_col=col_fin,
+    #             period="halfyear", store_path="data\\finance.csv")
 
-    col_valuation = ["CAP_1", "CAP_2", "PE_TTM", "PE_TTM_2", "PE_LYR", "PB", "PS_TTM", "PS_LYR",
-                     "PCF_OPER_TTM", "PCF_NF_TTM", "PCF_OPER_LYR", "PCF_NF_LYR"]
-    concat_data(directory_names[3], subs_col=col_valuation,
-                period="monthly", store_path="data\\valuation.csv")
+    # col_valuation = ["CAP_1", "CAP_2", "PE_TTM", "PE_TTM_2", "PE_LYR", "PB", "PS_TTM", "PS_LYR",
+    #                  "PCF_OPER_TTM", "PCF_NF_TTM", "PCF_OPER_LYR", "PCF_NF_LYR"]
+    # concat_data(directory_names[3], subs_col=col_valuation,
+    #             period="monthly", store_path="data\\valuation.csv")
 
     stock_df()
 
-    file_text.close()
+    # file_text.close()
