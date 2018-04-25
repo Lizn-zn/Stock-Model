@@ -1,26 +1,42 @@
-from WindPy import *
+# _*_ coding:utf-8 _*_
+# name gefile.py
+import sys
 import os
-w.start()
-# get stock code in SH and SZ
-AllAstock = w.wset("SectorConstituent")
-stock_code = AllAstock.Data[1]
-fields = "ev,mkt_cap_ard,ev3,pe_ttm,val_pe_deducted_ttm,pe_lyr,pb_lf,pb_mrq,pb_lyr,ps_ttm,ps_lyr,pcf_ocf_ttm,pcf_ocflyr,pcf_ncf_ttm,pcf_nflyr"
-date = ['0131', '0228', '0331', '0430', '0531', '0630',
-        '0731', '0831', '0930', '1031', '1130', '1231']
-year = 2010
-for t in range(8):
-    year += t
-    for i in range(len(date)):
-        guzhi_data = w.wss(stock_code, fields, "unit=1;tradeDate=" +
-                           str(year) + date[i] + ";currencyType=")
-        if not (os.path.exists('guzhi')):
-            print("create dict")
-            os.mkdir('guzhi')
-        file = open('guzhi/' + str(year) + date[i] + '.csv', 'w')
-        file.write(str(guzhi_data.Data[0]))
-        file.close()
-file = open('guzhi/readme.txt')
-file.write('this is guzhi data,the data is ev,mkt_cap_ard,ev3,pe_ttm,val_pe_deducted_ttm,pe_lyr,pb_lf,pb_mrq,pb_lyr,ps_ttm,ps_lyr,pcf_ocf_ttm,pcf_ocflyr,pcf_ncf_ttm,pcf_nflyr')
-file.close()
+import stat
+import socket
+import paramiko
 
-print(guzhi_data)
+
+def data_download():
+	FILES = ["估值指标", "成长能力与偿债能力", "技术指标", "财务质量",  "收盘价格"]
+	USERNAME = "root"
+	PASSWORD = "FhWJ4J6k"
+	HOST = "210.28.133.11"
+	PORT = 21030
+	remotefile = "/root/things/"
+	sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+	sock.connect((HOST, PORT))
+	t = paramiko.Transport(sock)
+	t.start_client()
+	t.auth_password(USERNAME, PASSWORD)
+	sftp = paramiko.SFTPClient.from_transport(t)
+	for f in FILES:
+	    if not os.path.exists(f):
+	        os.makedirs(f)
+	    localdir = sys.path[0] + "\\" + f
+	    remotedir = remotefile + f
+	    files = sftp.listdir_attr(remotedir)
+	    for temp in files:
+	        remotepath = remotedir + "/" + temp.filename
+	        localpath = localdir + "\\" + temp.filename
+	        if(os.path.exists(localpath)):
+	            print('exists {}, continue...'.format(temp.filename))
+	            continue
+	        sftp.get(remotepath, localpath)
+	        print('download {}...'.format(temp.filename))
+	sftp.close()
+	t.close()
+	sock.close()
+
+
+
