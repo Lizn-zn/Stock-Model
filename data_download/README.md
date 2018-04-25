@@ -1,1 +1,1 @@
-We use the WindPy to download the data, this is an example.
+This .py file will create directiory in this folder and download data including tech, finance, growth, debt, valuation and closing price.
