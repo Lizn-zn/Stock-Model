@@ -22,5 +22,5 @@ We have downloaded some data from Wind, and others will be calculated by ourselv
 &emsp; We take two methods to label the data, the one is label the data by sorting the earning rate per month; and the other is mark the stock which has (earning rate > 1.1) as 1, and others as 0.
 
 #### Run sequence
-The all .py I have saved in stock_model, this is a temp folder which will be deleted later. And two trained model is in `,ethod1_model/` and `method2_model/`
+The all .py I have saved in stock_model, this is a temp folder which will be deleted later. And two trained model is in [data](https://pan.baidu.com/s/1343z8W7sXRpBij6uHrBs4A) and code is "5f2n" 
 data_download -> data_prepare -> data_preprocess -> data_price -> data_label -> trainmodel
