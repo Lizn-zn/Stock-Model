@@ -47,3 +47,4 @@ def merge_data(directory, store_path="data\\price_data"):
 
 if __name__ == '__main__':
     merge_data("收盘价格")
+    
