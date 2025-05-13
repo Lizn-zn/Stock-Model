@@ -34,3 +34,4 @@ def label_data(path, nb_class=5, store_path="data\\label_data"):
 
 if __name__ == '__main__':
     label_data('data\\price_data\\total_M\\wind_data.csv')
+    print('get it')
